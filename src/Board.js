@@ -122,7 +122,7 @@
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function (colIndex) {
       var count = 0;
-      debugger;
+
       for (var i = 0; i < this.get('n'); i++) {
         count += this.get(i)[colIndex];
       }
@@ -131,54 +131,54 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function () {
-      var result = [];
-      //array[0]
-      for (var i = 0; i < this.get(0).length; i++) {
-        result[i] = this.get(0)[i];
+      var obj = {};
+      var arrlength = this.get('n');
+      for (var i = 0; i < arrlength; i++) {
+        for (var j = 0; j < arrlength; j++) {
+          if (obj[j] === undefined) {
+            obj[j] = this.get(i)[j];
+          } else {
+            obj[j] += this.get(i)[j];
+          }
+        }
       }
-      //array[1]
-      for (var j = 0; j < this.get(1).length; j++) {
-        result[j] += this.get(1)[j];
-      }
-      //array[2]
-      for (var k = 0; k < this.get(2).length; k++) {
-        result[k] += this.get(2)[k];
-      }
-      //array[3]
-      // for (var l = 0; l < this.get(3).length; l++) {
-      //   result[l] += this.get(3)[l];
-      // }
-
-      for (var m = 0; m < result.length; m++) {
-        if (result[m] > 1) {
+      for (var key in obj) {
+        if (obj[key] > 1) {
           return true;
         }
       }
-      // _.each(result, function (element) {
-      //   if (element > 1) {
-      //     return true;
-      //   }
-      // });
-
       return false;
     },
-
-
 
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      //May or may not be complete. Dependant on the below function.
+      var values = 0;
+      var colIndex = majorDiagonalColumnIndexAtFirstRow;
+      var lengthRemaining = this.get('n') - colIndex;
+      for (var i = 0; i < lengthRemaining; i++) {
+        values += this.get(i)[colIndex] || 0;   //make sure it is defined
+        colIndex++;
+      }
+
+      return values > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function () {
+      //Set the bounds so we do not go into undefined (uncharted) squares for optimizing algo
+      // var array = [];
+      // var len = this.get('n') - 1;
+      // for (var i = len; i > -this.get('n'); i--) {
+      //   var bool = this.hasMajorDiagonalConflictAt(i);
+      //   array.push(bool);
+      // }
+      // return array;
       return false; // fixme
     },
-
-
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------

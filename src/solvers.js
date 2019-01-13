@@ -39,7 +39,44 @@ window.findNRooksSolution = function (n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function (n) {
-  var solutionCount = undefined; //fixme
+  /*
+  declare a found solution count. initialize to 0;
+  have a count for remaining rooks
+  check if there are any row or col conflicts
+
+  toggle piece
+  skip to next row
+  find col that !rowconflicts/!colconflicts
+  toggle piece
+  skip to next row
+  have a rookremaining checker
+  rookremaining = 0
+  +1 to solution count
+  call recursive fn on prev parent board
+  */
+
+  var board = new Board({ n: 3 });
+  var solutionCount = 0;
+  var traverseRooks = function (board, rowIndex, colIndex, rr) {
+    //base case
+    //another base case: rowIndex === n, then return;
+    if (rooksRemaining === 0) {
+      solutionCount++;
+      //go back up to parent board
+      //how will the interpreter know to return when
+    }
+
+    //recursive case
+    var rooksRemaining = 3;
+    board.togglePiece(rowIndex, colIndex);
+    if (board.hasAnyRowConflicts() || board.hasAnyColConflicts()) {
+      return;
+    } else {
+      rowIndex++;
+      traverseRooks(board, rI, cI, n - 1)
+    }
+
+  }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
